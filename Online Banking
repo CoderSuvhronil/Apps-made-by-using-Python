@@ -1,0 +1,87 @@
+class Account:
+    # Initializes the account with owner's name and opening balance
+    def __init__(self, name: str, bal: float = 0.0):
+        self.name = name
+        self.balance = bal
+
+    # Deposits an amount into the account
+    def deposit(self, amt: float):
+        self.balance += amt
+
+    # Withdraws an amount if sufficient balance exists
+    def withdraw(self, amt: float) -> bool:
+        if amt <= self.balance:
+            self.balance -= amt
+            return True
+        return False
+
+    # Returns the current balance
+    def get_balance(self) -> float:
+        return self.balance
+
+
+class BankingApp:
+    # Initializes the banking application with an empty account registry
+    def __init__(self):
+        self.accounts: dict[str, Account] = {}
+
+    # Creates a new account and stores it in the registry
+    def create(self):
+        name = input("Name: ")
+        bal = float(input("Balance: "))
+        self.accounts[name] = Account(name, bal)
+        print("Account created successfully!\n")
+
+    # Retrieves an account by owner name
+    def acc(self, name: str):
+        return self.accounts.get(name)
+
+    # Handles deposit workflow
+    def deposit(self):
+        name = input("Name: ")
+        amt = float(input("Amount: "))
+        a = self.acc(name)
+        if a:
+            a.deposit(amt)
+            print("Amount deposited successfully!\n")
+        else:
+            print("Account not found.\n")
+
+    # Handles withdrawal workflow
+    def withdraw(self):
+        name = input("Name: ")
+        amt = float(input("Amount: "))
+        a = self.acc(name)
+        if a and a.withdraw(amt):
+            print("Money withdrawn successfully!\n")
+        else:
+            print("Failed (insufficient balance or no account).\n")
+
+    # Shows the balance of the requested account
+    def balance(self):
+        name = input("Name: ")
+        a = self.acc(name)
+        if a:
+            print(f"Balance: ₹{a.get_balance():.2f}\n")
+        else:
+            print("Account not found.\n")
+
+    # Runs the interactive command menu loop
+    def run(self):
+        menu = {
+            "1": self.create,
+            "2": self.deposit,
+            "3": self.withdraw,
+            "4": self.balance,
+            "0": exit,
+        }
+
+        while True:
+            print("Menu: 1) Open 2) Deposit 3) Withdraw 4) Balance 0) Quit")
+            choice = input("> ")
+            menu.get(choice, lambda: print("Invalid Choice.\n"))()
+
+
+# Launch the application
+if __name__ == "__main__":
+    BankingApp().run()
