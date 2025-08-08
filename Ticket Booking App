@@ -1,0 +1,90 @@
+# Class representing a single ticket
+from random import choice
+
+class Ticket:
+    def __init__(self, name, seat):
+        self.name = name
+        self.seat = seat
+
+
+# Class to manage ticket booking system
+class TicketBookingApp:
+    def __init__(self):
+        self.tickets = []
+        self.booked_seats = set()
+
+
+    # Book a new ticket
+    def book_ticket(self):
+        name = input("Enter your name: ")
+        seat = input("Enter seat number: ")
+
+        if seat in self.booked_seats:
+            print("Seat already booked!")
+        else:
+            ticket = Ticket(name, seat)
+            self.tickets.append(ticket)
+            self.booked_seats.add(seat)
+            print("Ticket Booked Successfully!")
+
+
+    # View all booked tickets
+    def view_tickets(self):
+        if not self.tickets:
+            print("No Tickets Booked.")
+        else:
+            print("\nBooked Tickets:")
+            for t in self.tickets:
+                print(f"Name: {t.name}, Seat: {t.seat}")
+
+
+    # Cancel a booked ticket
+    def cancel_ticket(self):
+        seat = input("Enter seat number to cancel: ")
+        for t in self.tickets:
+            if t.seat == seat:
+                self.tickets.remove(t)
+                self.booked_seats.remove(seat)
+                print("Ticket Cancelled.")
+                return
+        print("Ticket not Found.")
+
+    # Main menu to interact with users
+    def run(self):
+        while True:
+            print("\n--- Ticket Booking Menu ---")
+
+            print("1. Book Ticket")
+
+            print("2. View Tickets")
+
+            print("3. Cancel Ticket")
+
+            print("4. Exit")
+
+            choice = input("Enter Your Choice: ")
+
+            if choice == "1":
+
+                self.book_ticket()
+
+            elif choice == "2":
+
+                self.view_tickets()
+
+            elif choice == "3":
+
+                self.cancel_ticket()
+
+            elif choice == "4":
+
+                print("Thank you for using the Ticket Booking App!")
+                break
+
+            else:
+
+                print("Invalid Choice!")
+
+# Create app instance & run
+app = TicketBookingApp()
+app.run()
