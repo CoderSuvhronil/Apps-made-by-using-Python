@@ -1,0 +1,103 @@
+# Define Product class
+from itertools import product
+from random import choice
+
+
+class Product:
+    def __init__(self, name, price):
+        self.name = name
+
+        self.price = price
+
+
+# Define ShoppingCart class
+class ShoppingCart:
+    def __init__(self):
+        self.items = []
+
+    # Add product to cart
+    def add_item(self,product):
+        self.items.append(product)
+
+    # Remove product from cart by name
+    def remove_item(self, name):
+        self.items = [item for item in self.items if item.name != name]
+
+    # Display all items in cart
+    def view_cart(self):
+        if not self.items:
+            print("Your Cart is Empty.")
+        else:
+            for i, item in enumerate(self.items, 1):
+                print(f"{i}. {item.name} - ${item.price}")
+
+    # Calculate total price
+    def total(self):
+
+        return sum(item.price for item in self.items)
+
+
+# main app loop
+def main():
+
+    cart = ShoppingCart()
+
+    products = [
+
+        Product("Shoes", 50),
+        Product("T-shirt", 20),
+        Product("Watch", 100),
+        Product("Cap", 10)
+    ]
+
+    while True:
+
+        print ("\n=== shopping Menu ===")
+
+        print("1. View Products")
+        print("2. Add to Cart")
+        print("3. Remove from Cart")
+        print("4. View Cart")
+        print("5. Checkout")
+        print("6. Exit")
+
+        choice = input("Select option: ")
+
+        if choice == "1":
+
+            for i, p in enumerate(products, 1):
+                print(f"{i}. {p.name} - ${p.price}")
+
+        elif choice == "2":
+
+            p_id = int(input("Enter Product Number: ")) - 1
+
+            if 0 <= p_id < len(products):
+                cart.add_item(products[p_id])
+                print("Added to cart.")
+            else:
+                print("Invalid Product")
+
+        elif choice == "3":
+
+            name = input("Enter product name to remove: ")
+            cart.remove_item(name)
+            print("Removed from Cart.")
+
+        elif choice == "4":
+
+            cart.view_cart()
+
+        elif choice == "5":
+            cart.view_cart()
+            print("Total: $", cart.total())
+
+        elif choice == "6":
+            print("Thanks for Shopping with us!!")
+
+            break
+
+        else:
+            print("Invalid Choice.")
+
+main()
