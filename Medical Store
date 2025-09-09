@@ -1,0 +1,123 @@
+class Medicine:
+    def __init__(self, mid, name, price, stock):
+        self.id = mid
+        self.name = name
+        self.price = price
+        self.stock = stock
+
+    def show(self):
+        print(f"[{self.id}] {self.name} - ${self.price} - Stock: {self.stock}")
+
+
+class Customer:
+    def __init__(self, cid, name):
+        self.id = cid
+        self.name = name
+        self.history = []
+
+    def add_purchase(self, medicine, qty, total):
+        self.history.append((medicine, qty, total))
+
+    def show_history(self):
+        print(f"Purchase History for {self.name}:")
+        if not self.history:
+            print("No purchases yet.")
+        for med, qty, total in self.history:
+            print(f"{med.name} x{qty} = ${total}")
+
+
+class MedicalStore:
+    def __init__(self):
+        self.medicines = []
+        self.customers = []
+        self.mid_counter = 1
+        self.cid_counter = 1   # ✅ fixed name
+
+    def add_medicine(self, name, price, stock):
+        self.medicines.append(Medicine(self.mid_counter, name, price, stock))
+        self.mid_counter += 1
+        print("Medicine Added.")
+
+    def view_medicines(self):
+        if not self.medicines:
+            print("No Medicines available.")
+        for m in self.medicines:
+            m.show()
+
+    def add_customer(self, name):
+        c = Customer(self.cid_counter, name)
+        self.customers.append(c)
+        self.cid_counter += 1
+        print(f"Customer {name} registered (ID: {c.id}).")
+
+    def find_customer(self, cid):
+        for c in self.customers:
+            if c.id == cid:
+                return c
+        return None
+
+    def buy_medicine(self, cid, mid, qty):
+        cust = self.find_customer(cid)
+        if not cust:
+            print("Customer not found.")
+            return
+
+        for m in self.medicines:
+            if m.id == mid:
+                if m.stock >= qty:
+                    m.stock -= qty
+                    total = m.price * qty
+                    cust.add_purchase(m, qty, total)
+                    print(f"{cust.name} bought {qty} of {m.name}. Bill = ${total}")
+                    return
+                else:
+                    print("Not enough stock.")
+                    return
+        print("Medicine not found.")
+
+    def show_customer_history(self, cid):  # ✅ moved outside
+        cust = self.find_customer(cid)
+        if cust:
+            cust.show_history()
+        else:
+            print("Customer not found.")
+
+
+def menu():
+    store = MedicalStore()
+    while True:
+        print("\n1. Add Medicine\n2. View Medicines\n3. Add Customer\n4. Buy Medicine\n5. Customer History\n6. Exit")
+        choice = input("Enter Choice: ")
+
+        if choice == "1":
+            n = input("Name: ")
+            p = float(input("Price: "))
+            s = int(input("Stock: "))
+            store.add_medicine(n, p, s)
+
+        elif choice == "2":
+            store.view_medicines()
+
+        elif choice == "3":
+            n = input("Customer name: ")
+            store.add_customer(n)
+
+        elif choice == "4":
+            cid = int(input("Customer ID: "))
+            mid = int(input("Medicine ID: "))
+            q = int(input("Quantity: "))
+            store.buy_medicine(cid, mid, q)
+
+        elif choice == "5":
+            cid = int(input("Customer ID: "))
+            store.show_customer_history(cid)
+
+        elif choice == "6":
+            print("Exiting...")
+            break
+
+        else:
+            print("Invalid choice")
+
+
+menu()
