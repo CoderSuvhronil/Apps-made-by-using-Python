@@ -1,0 +1,55 @@
+class PaymentApp:
+    def __init__(self):
+        self.balance = 0
+
+    # Method to add money to balance
+    def add_money(self, amount):
+        self.balance += amount
+        print(f"✅ Added Rs.{amount}. new Balance: Rs.{self.balance}")
+
+    # Method to make a payment
+    def make_payment(self, amount):
+        if amount > self.balance:
+            print("❌ Insufficient Balance!")
+        else:
+            self.balance -= amount
+            print(f"✅ Paid  Rs.{amount}. Remaining Balance: ${self.balance}")
+
+    # Method to view current balance
+    def view_balance(self):
+        print(f"💰 Current Balance: Rs.{self.balance}")
+
+def main():
+
+    app = PaymentApp()
+
+    while True:
+
+        print("\n--- Payment App Menu ---")
+        print("1. Add Money")
+        print("2. Make Payment")
+        print("3. View Balance")
+        print("4. Exit")
+
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            amount = float(input("Enter Amount to add: "))
+            app.add_money(amount)
+
+        elif choice == "2":
+            amount = float(input("Enter Amount to pay: "))
+            app.make_payment(amount)
+
+        elif choice == "3":
+            app.view_balance()
+
+        elif choice == "4":
+            print("👋🏻 Exiting the App. Goodbye!")
+            break
+
+        else:
+            print("❌ Invalid Choice. Try Again.")
+
+if __name__ == "__main__":
+    main()
