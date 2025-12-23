@@ -1,0 +1,91 @@
+class RestaurantApp:
+
+    def __init__(self):
+        # Initialize menu and orders
+        self.menu = {
+            "Burger": 70,
+            "Pizza": 99,
+            "Pasta": 60,
+            "Sandwich": 50,
+            "French Fries": 40,
+            "Momos": 80,
+            "Coffee": 30,
+            "Cold Drink": 25
+        }
+        self.orders = []   # list of tuples -> (item, quantity)
+
+    # Display restaurant menu
+    def show_menu(self):
+        print("\n--- Menu ---")
+        for item, price in self.menu.items():
+            print(f"{item}: Rs.{price}")
+
+    # Take new order with quantity
+    def take_order(self):
+        item = input("Enter Item Name: ").title()
+
+        if item in self.menu:
+            try:
+                qty = int(input("Enter Quantity: "))
+                if qty > 0:
+                    self.orders.append((item, qty))
+                    print(f"{item} x {qty} added to order.")
+                else:
+                    print("Quantity must be greater than zero!")
+            except ValueError:
+                print("Please enter a valid number!")
+        else:
+            print("Item not found!")
+
+    # View all orders
+    def view_orders(self):
+        if not self.orders:
+            print("No orders yet.")
+        else:
+            print("\n--- Orders ---")
+            for i, (item, qty) in enumerate(self.orders, 1):
+                print(f"{i}. {item} x {qty}")
+
+    # Calculate total bill
+    def total_bill(self):
+        if not self.orders:
+            print("No orders placed.")
+            return
+
+        total = 0
+        print("\n--- Bill Details ---")
+        for item, qty in self.orders:
+            price = self.menu[item] * qty
+            total += price
+            print(f"{item} x {qty} = Rs.{price}")
+
+        print(f"\nTotal Bill: Rs.{total}")
+
+    # Run main menu
+    def run(self):
+        while True:
+            print("\n--- Restaurant App ---")
+            print("1. Show Menu")
+            print("2. Take Order")
+            print("3. View Orders")
+            print("4. Total Bill")
+            print("5. Exit")
+
+            choice = input("Choose an Option: ")
+
+            if choice == '1':
+                self.show_menu()
+            elif choice == '2':
+                self.take_order()
+            elif choice == '3':
+                self.view_orders()
+            elif choice == '4':
+                self.total_bill()
+            elif choice == '5':
+                print("Good Bye!")
+                break
+            else:
+                print("Invalid Choice!")
+
+
+RestaurantApp().run()
