@@ -1,0 +1,115 @@
+class Product:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+
+class GroceryStore:
+    def __init__(self):
+        self.products = []
+        self.cart = []
+
+    def add_product(self, name, price):
+        product = Product(name, price)
+        self.products.append(product)
+
+    def show_products(self):
+        print("\nAvailable Products:")
+        for i, product in enumerate(self.products, start=1):
+            print(f"{i}. {product.name} - Rs {product.price}")
+
+    def add_to_cart(self, index, quantity):
+        if 0 <= index < len(self.products):
+            product = self.products[index]
+            self.cart.append((product, quantity))
+            print(f"{product.name} added to cart.")
+        else:
+            print("Invalid product index!")
+
+    def view_cart(self):
+        print("\nYour Cart:")
+        total = 0
+
+        if not self.cart:
+            print("Cart is empty!")
+            return
+
+        for i, (product, quantity) in enumerate(self.cart, start = 1):
+            cost = product.price * quantity
+            total += cost
+            print(f"{i}. {product.name} x {quantity} = Rs {cost}")
+
+        print(f"Total: Rs {total}")
+
+    def remove_from_cart(self, index):
+        if 0 <= index < len(self.cart):
+            product, _ = self.cart.pop(index)
+            print(f"{product.name} removed from cart.")
+        else:
+            print("Invalid index!")
+
+    def checkout(self):
+        print("\nChecking out...")
+        self.view_cart()
+        self.cart.clear()
+        print("Thank you for shopping with us!!")
+
+
+def main():
+    store = GroceryStore()
+
+    # Preloaded products
+    store.add_product("Milk", 10)
+    store.add_product("Rice", 20)
+    store.add_product("Apple", 100)
+    store.add_product("Bread", 80)
+    store.add_product("Eggs", 200)
+    store.add_product("Butter", 80)
+
+    while True:
+        print("\nWelcome to the Grocery Store.")
+        print("1. View products")
+        print("2. Add to cart")
+        print("3. View cart")
+        print("4. Remove from cart")
+        print("5. Checkout")
+        print("6. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            store.show_products()
+
+        elif choice == "2":
+            store.show_products()
+            try:
+                index = int(input("Enter Product Number: ")) - 1
+                quantity = int(input("Enter Quantity: "))
+                store.add_to_cart(index, quantity)
+            except:
+                print("Invalid Input!")
+
+        elif choice == "3":
+            store.view_cart()
+
+        elif choice == "4":
+            store.view_cart()
+            try:
+                index = int(input("Enter item number to remove: ")) - 1
+                store.remove_from_cart(index)
+            except:
+                print("Invalid Input!")
+
+        elif choice == "5":
+            store.checkout()
+
+        elif choice == "6":
+            print("Exiting app...")
+            break
+
+        else:
+            print("Invalid choice!")
+
+
+if __name__ == "__main__":
+    main()
